@@ -60,4 +60,3 @@ registerRoute(
   })
 );
 
-registerRoute();

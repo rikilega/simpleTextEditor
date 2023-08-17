@@ -1,6 +1,7 @@
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
-const path = require('path');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = () => {
@@ -13,10 +14,11 @@ module.exports = () => {
     output: {
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
+      publicPath: '/',
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/index.html',
+        template: './index.html',
         filename: 'index.html',
     }),
     new InjectManifest({
@@ -24,16 +26,17 @@ module.exports = () => {
         swDest: 'src-sw.js'
     }),
     new WebpackPwaManifest({
+        fingerprints: false,
         name: 'JATE Text Editor',
         short_name: 'JATE',
         description: 'A simple text editor PWA.',
         background_color: '#ffffff',
-        crossorigin: 'use-credentials', // can be null, use-credentials or anonymous
+        // crossorigin: 'anonymous', // can be null, use-credentials or anonymous
         icons: [
             {
-                src: path.resolve('src/images/logo.png'),
+                src: path.resolve('../client/assets/icon.png'),
                 sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
-                destination: path.join('icons'),
+                destination: path.join('assets', 'icons'),
             },
         ],
     })
